@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Mail, Phone, MapPin, Instagram } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FORMSPREE_FORM_ID = import.meta.env.VITE_FORMSPREE_FORM_ID as string | undefined;
+const FORMSPREE_FORM_ID = "mgoqlyvj";
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -13,17 +13,21 @@ export default function ContactSection() {
   const leftRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    projectType: '',
-    location: '',
-    message: '',
+    name: "",
+    email: "",
+    projectType: "",
+    location: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (prefersReducedMotion) return;
 
     const section = sectionRef.current;
@@ -35,22 +39,22 @@ export default function ContactSection() {
     // Heading reveal
     gsap.fromTo(
       heading,
-      { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+      { clipPath: "inset(0 100% 0 0)", opacity: 0 },
       {
-        clipPath: 'inset(0 0% 0 0)',
+        clipPath: "inset(0 0% 0 0)",
         opacity: 1,
         duration: 1,
-        ease: 'power4.out',
+        ease: "power4.out",
         scrollTrigger: {
           trigger: section,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
+          start: "top 80%",
+          toggleActions: "play none none none",
         },
-      }
+      },
     );
 
     // Left column fade up
-    const leftItems = left.querySelectorAll('.reveal-item');
+    const leftItems = left.querySelectorAll(".reveal-item");
     gsap.fromTo(
       leftItems,
       { opacity: 0, y: 30 },
@@ -58,18 +62,18 @@ export default function ContactSection() {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: 'power3.out',
+        ease: "power3.out",
         stagger: 0.1,
         scrollTrigger: {
           trigger: left,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
+          start: "top 80%",
+          toggleActions: "play none none none",
         },
-      }
+      },
     );
 
     // Form fields reveal one by one
-    const formFields = form.querySelectorAll('.form-field');
+    const formFields = form.querySelectorAll(".form-field");
     gsap.fromTo(
       formFields,
       { opacity: 0, y: 20 },
@@ -77,64 +81,84 @@ export default function ContactSection() {
         opacity: 1,
         y: 0,
         duration: 0.6,
-        ease: 'power3.out',
+        ease: "power3.out",
         stagger: 0.08,
         scrollTrigger: {
           trigger: form,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
+          start: "top 80%",
+          toggleActions: "play none none none",
         },
-      }
+      },
     );
 
     return () => {
       ScrollTrigger.getAll()
-        .filter((st) => st.trigger === section || st.trigger === left || st.trigger === form)
+        .filter(
+          (st) =>
+            st.trigger === section ||
+            st.trigger === left ||
+            st.trigger === form,
+        )
         .forEach((st) => st.kill());
     };
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitStatus('idle');
+    setSubmitStatus("idle");
 
     if (!FORMSPREE_FORM_ID) {
-      console.error('Missing VITE_FORMSPREE_FORM_ID in .env — see .env.example');
-      setSubmitStatus('error');
+      console.error(
+        "Missing VITE_FORMSPREE_FORM_ID in .env — see .env.example",
+      );
+      setSubmitStatus("error");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `https://formspree.io/f/${FORMSPREE_FORM_ID}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            _replyto: formData.email,
+            projectType: formData.projectType,
+            location: formData.location,
+            message: formData.message,
+          }),
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          _replyto: formData.email,
-          projectType: formData.projectType,
-          location: formData.location,
-          message: formData.message,
-        }),
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('Form submission failed');
+        throw new Error("Form submission failed");
       }
 
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', projectType: '', location: '', message: '' });
+      setSubmitStatus("success");
+      setFormData({
+        name: "",
+        email: "",
+        projectType: "",
+        location: "",
+        message: "",
+      });
     } catch {
-      setSubmitStatus('error');
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -145,7 +169,7 @@ export default function ContactSection() {
       ref={sectionRef}
       id="contact"
       className="section-editorial"
-      style={{ position: 'relative', zIndex: 1 }}
+      style={{ position: "relative", zIndex: 1 }}
     >
       <div className="content-max">
         <h2
@@ -167,16 +191,23 @@ export default function ContactSection() {
             </h3>
             <p
               className="reveal-item font-body font-light leading-relaxed mb-8"
-              style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0 }}
+              style={{
+                color: "rgba(0,0,0,0.6)",
+                fontSize: "1.1rem",
+                lineHeight: 1.6,
+                opacity: 0,
+              }}
             >
-              Every great mural starts with a conversation. Tell me about your space, your vision, and the story you want to tell. I&rsquo;ll get back to you within 48 hours.
+              Every great mural starts with a conversation. Tell me about your
+              space, your vision, and the story you want to tell. I&rsquo;ll get
+              back to you within 48 hours.
             </p>
 
             <div className="space-y-4">
               <a
                 href="mailto:vidhiartistwork@gmail.com"
                 className="reveal-item flex items-center gap-3 font-body font-medium transition-colors duration-300 hover:text-dusty-gold"
-                style={{ color: '#000000', fontSize: '1.1rem', opacity: 0 }}
+                style={{ color: "#000000", fontSize: "1.1rem", opacity: 0 }}
               >
                 <Mail size={18} />
                 vidhiartistwork@gmail.com
@@ -184,14 +215,18 @@ export default function ContactSection() {
               <a
                 href="tel:+916350483564"
                 className="reveal-item flex items-center gap-3 font-body font-medium transition-colors duration-300 hover:text-dusty-gold"
-                style={{ color: '#000000', fontSize: '1rem', opacity: 0 }}
+                style={{ color: "#000000", fontSize: "1rem", opacity: 0 }}
               >
                 <Phone size={18} />
                 6350483564
               </a>
               <p
                 className="reveal-item flex items-center gap-3 font-body font-light"
-                style={{ color: 'rgba(0,0,0,0.6)', fontSize: '1rem', opacity: 0 }}
+                style={{
+                  color: "rgba(0,0,0,0.6)",
+                  fontSize: "1rem",
+                  opacity: 0,
+                }}
               >
                 <MapPin size={18} />
                 Jaipur, Rajasthan — Available across India
@@ -199,13 +234,16 @@ export default function ContactSection() {
             </div>
 
             {/* Social links */}
-            <div className="reveal-item flex items-center gap-8 mt-8" style={{ opacity: 0 }}>
+            <div
+              className="reveal-item flex items-center gap-8 mt-8"
+              style={{ opacity: 0 }}
+            >
               <a
                 href="https://www.instagram.com/artisanvidhi?igsh=MWg1OXByYXJjenBpZQ=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 font-body font-medium uppercase tracking-widest text-sm transition-colors duration-300 hover:text-dusty-gold"
-                style={{ color: '#000000' }}
+                style={{ color: "#000000" }}
               >
                 <Instagram size={16} />
                 Instagram
@@ -216,7 +254,10 @@ export default function ContactSection() {
           {/* Right column - Form */}
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             <div className="form-field" style={{ opacity: 0 }}>
-              <label className="block font-body font-medium uppercase tracking-widest text-xs mb-2" style={{ color: 'rgba(0,0,0,0.5)', letterSpacing: '0.06em' }}>
+              <label
+                className="block font-body font-medium uppercase tracking-widest text-xs mb-2"
+                style={{ color: "rgba(0,0,0,0.5)", letterSpacing: "0.06em" }}
+              >
                 Name
               </label>
               <input
@@ -226,12 +267,15 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 className="w-full font-body text-ink-black py-3 bg-transparent border-b outline-none transition-colors duration-300 focus:border-dusty-gold"
-                style={{ borderColor: 'rgba(0,0,0,0.2)' }}
+                style={{ borderColor: "rgba(0,0,0,0.2)" }}
               />
             </div>
 
             <div className="form-field" style={{ opacity: 0 }}>
-              <label className="block font-body font-medium uppercase tracking-widest text-xs mb-2" style={{ color: 'rgba(0,0,0,0.5)', letterSpacing: '0.06em' }}>
+              <label
+                className="block font-body font-medium uppercase tracking-widest text-xs mb-2"
+                style={{ color: "rgba(0,0,0,0.5)", letterSpacing: "0.06em" }}
+              >
                 Email
               </label>
               <input
@@ -241,12 +285,15 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 className="w-full font-body text-ink-black py-3 bg-transparent border-b outline-none transition-colors duration-300 focus:border-dusty-gold"
-                style={{ borderColor: 'rgba(0,0,0,0.2)' }}
+                style={{ borderColor: "rgba(0,0,0,0.2)" }}
               />
             </div>
 
             <div className="form-field" style={{ opacity: 0 }}>
-              <label className="block font-body font-medium uppercase tracking-widest text-xs mb-2" style={{ color: 'rgba(0,0,0,0.5)', letterSpacing: '0.06em' }}>
+              <label
+                className="block font-body font-medium uppercase tracking-widest text-xs mb-2"
+                style={{ color: "rgba(0,0,0,0.5)", letterSpacing: "0.06em" }}
+              >
                 Project Type
               </label>
               <select
@@ -255,7 +302,7 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 className="w-full font-body text-ink-black py-3 bg-transparent border-b outline-none transition-colors duration-300 focus:border-dusty-gold"
-                style={{ borderColor: 'rgba(0,0,0,0.2)' }}
+                style={{ borderColor: "rgba(0,0,0,0.2)" }}
               >
                 <option value="">Select a type</option>
                 <option value="cafe">Café / Restaurant</option>
@@ -267,7 +314,10 @@ export default function ContactSection() {
             </div>
 
             <div className="form-field" style={{ opacity: 0 }}>
-              <label className="block font-body font-medium uppercase tracking-widest text-xs mb-2" style={{ color: 'rgba(0,0,0,0.5)', letterSpacing: '0.06em' }}>
+              <label
+                className="block font-body font-medium uppercase tracking-widest text-xs mb-2"
+                style={{ color: "rgba(0,0,0,0.5)", letterSpacing: "0.06em" }}
+              >
                 Location
               </label>
               <input
@@ -277,12 +327,15 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 className="w-full font-body text-ink-black py-3 bg-transparent border-b outline-none transition-colors duration-300 focus:border-dusty-gold"
-                style={{ borderColor: 'rgba(0,0,0,0.2)' }}
+                style={{ borderColor: "rgba(0,0,0,0.2)" }}
               />
             </div>
 
             <div className="form-field" style={{ opacity: 0 }}>
-              <label className="block font-body font-medium uppercase tracking-widest text-xs mb-2" style={{ color: 'rgba(0,0,0,0.5)', letterSpacing: '0.06em' }}>
+              <label
+                className="block font-body font-medium uppercase tracking-widest text-xs mb-2"
+                style={{ color: "rgba(0,0,0,0.5)", letterSpacing: "0.06em" }}
+              >
                 Message
               </label>
               <textarea
@@ -292,28 +345,29 @@ export default function ContactSection() {
                 rows={4}
                 required
                 className="w-full font-body text-ink-black py-3 bg-transparent border-b outline-none transition-colors duration-300 focus:border-dusty-gold resize-none"
-                style={{ borderColor: 'rgba(0,0,0,0.2)' }}
+                style={{ borderColor: "rgba(0,0,0,0.2)" }}
               />
             </div>
 
-            {submitStatus === 'success' && (
+            {submitStatus === "success" && (
               <p
                 className="form-field font-body text-sm"
-                style={{ color: '#4A6741', opacity: 1 }}
+                style={{ color: "#4A6741", opacity: 1 }}
                 role="status"
               >
-                Thank you for reaching out! We will get back to you within 48 hours.
+                Thank you for reaching out! We will get back to you within 48
+                hours.
               </p>
             )}
-            {submitStatus === 'error' && (
+            {submitStatus === "error" && (
               <p
                 className="form-field font-body text-sm"
-                style={{ color: '#8B5E3C', opacity: 1 }}
+                style={{ color: "#8B5E3C", opacity: 1 }}
                 role="alert"
               >
                 {!FORMSPREE_FORM_ID
-                  ? 'Form is not configured yet. Add your Formspree ID to .env (see setup steps).'
-                  : 'Something went wrong. Please try again or email vidhiartistwork@gmail.com directly.'}
+                  ? "Form is not configured yet. Add your Formspree ID to .env (see setup steps)."
+                  : "Something went wrong. Please try again or email vidhiartistwork@gmail.com directly."}
               </p>
             )}
 
@@ -323,22 +377,22 @@ export default function ContactSection() {
               className="form-field font-body font-medium uppercase tracking-widest text-sm py-4 px-12 transition-all duration-300 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
               style={{
                 opacity: 0,
-                backgroundColor: '#D4A853',
-                color: '#000000',
-                letterSpacing: '0.1em',
-                border: 'none',
+                backgroundColor: "#D4A853",
+                color: "#000000",
+                letterSpacing: "0.1em",
+                border: "none",
               }}
               onMouseEnter={(e) => {
                 if (isSubmitting) return;
-                (e.target as HTMLElement).style.backgroundColor = '#1A1410';
-                (e.target as HTMLElement).style.color = '#F5EDE0';
+                (e.target as HTMLElement).style.backgroundColor = "#1A1410";
+                (e.target as HTMLElement).style.color = "#F5EDE0";
               }}
               onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = '#D4A853';
-                (e.target as HTMLElement).style.color = '#000000';
+                (e.target as HTMLElement).style.backgroundColor = "#D4A853";
+                (e.target as HTMLElement).style.color = "#000000";
               }}
             >
-              {isSubmitting ? 'Sending…' : 'Send Message'}
+              {isSubmitting ? "Sending…" : "Send Message"}
             </button>
           </form>
         </div>
