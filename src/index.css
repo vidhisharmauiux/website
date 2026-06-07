@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 36 33% 92%;
+    --card: 0 0% 4%;
+    --card-foreground: 36 33% 92%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 36 33% 92%;
+    --primary: 39 55% 58%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 30 8% 16%;
+    --secondary-foreground: 36 33% 92%;
+    --muted: 30 8% 16%;
+    --muted-foreground: 36 18% 69%;
+    --accent: 30 8% 16%;
+    --accent-foreground: 36 33% 92%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 36 18% 40%;
+    --input: 36 18% 40%;
+    --ring: 39 55% 58%;
+    --radius: 0.25rem;
+  }
+
+  body {
+    @apply bg-void text-warm-cream;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@layer components {
+  .section-gallery {
+    @apply relative w-full px-5 md:px-8 lg:px-12;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .section-gallery {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  .section-editorial {
+    @apply relative w-full bg-white px-5 md:px-8 lg:px-12;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .section-editorial {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  .section-editorial-dark {
+    @apply bg-ink-black;
+  }
+
+  .heading-gallery {
+    @apply font-display font-normal uppercase text-warm-cream text-center;
+    font-size: clamp(2.5rem, 8vw, 10rem);
+    line-height: 0.9;
+  }
+
+  .heading-editorial {
+    @apply font-display font-medium text-ink-black;
+    font-size: clamp(2.5rem, 8vw, 8rem);
+    line-height: 1.0;
+  }
+
+  .btn-ghost-gold {
+    @apply font-body font-medium uppercase tracking-widest text-sm text-dusty-gold border-b border-dusty-gold pb-1 transition-all duration-300;
+  }
+
+  .btn-ghost-gold:hover {
+    border-bottom-width: 2px;
+    text-shadow: 0 0 20px rgba(212, 168, 83, 0.15);
+  }
+
+  .btn-ghost-cream {
+    @apply font-body font-medium uppercase tracking-widest text-sm text-muted-cream border-b border-muted-cream pb-1 transition-all duration-300;
+  }
+
+  .btn-ghost-cream:hover {
+    @apply text-dusty-gold border-dusty-gold;
+  }
+
+  .content-max {
+    @apply mx-auto w-full;
+    max-width: 1400px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
