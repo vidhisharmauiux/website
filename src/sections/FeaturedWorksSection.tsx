@@ -5,15 +5,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const WORKS = [
-  { src: '/images/chernobyl-aunt.png', caption: '"Chernobyl Aunt"', sub: 'Café Mural, Jaipur', category: 'Murals' },
+  { src: '/images/chernobyl-aunt.jpeg', caption: '"Chernobyl Aunt"', sub: 'Café Mural, Jaipur', category: 'Murals' }
   { src: '/images/doodle-art.png', caption: '"Doodle Art"', sub: 'Wall Doodle, Udaipur', category: 'Doodles' },
-  { src: '/images/girl-in-a-forest.png', caption: '"Girl in a Forest"', sub: 'Canvas Series', category: 'Canvases' },
+  { src: '/images/girl-in-a-forest.jpeg', caption: '"Girl in a Forest"', sub: 'Canvas Series', category: 'Canvases' }
   { src: '/images/colorful-doodle.png', caption: '"Colorful Doodle"', sub: 'Restaurant Interior, Jodhpur', category: 'Murals' },
   { src: '/images/dark-doodles.png', caption: '"Dark Doodles"', sub: 'Residential Wall, Delhi', category: 'Murals' },
   { src: '/images/puta-madre.png', caption: '"Puta Madre"', sub: 'Mixed Media Doodle', category: 'Doodles' },
   { src: '/images/black-mask.png', caption: '"Black Mask"', sub: 'Canvas Series', category: 'Canvases' },
   { src: '/images/pancake-women.png', caption: '"Pancake Women"', sub: 'Canvas', category: 'Canvases' },
-  { src: '/images/jaipur-art.png', caption: '"Jaipur Art"', sub: 'Hotel Lobby, Pushkar', category: 'Murals' },
+  { src: '/images/jaipur-art.jpeg', caption: '"Jaipur Art"', sub: 'Hotel Lobby, Pushkar', category: 'Murals' }
 ];
 
 const FILTERS = ['All', 'Murals', 'Café Art', 'Doodles', 'Canvases'];
