@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 const WORKS = [
   {
     src: "/images/chernobyl-aunt.jpeg",
-    caption: '"Chernobyl Aunt"',
+    caption: '"Colourful Doodles"',
     sub: "Café Mural, Jaipur",
     category: "Murals",
   },
