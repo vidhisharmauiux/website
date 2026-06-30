@@ -18,7 +18,7 @@ const WORKS = [
     category: "Doodles",
   },
   {
-    src: "/images/girl-in-a-forest.jpeg",
+    src: "/images/girl-in-a-forestt.jpeg",
     caption: '"Girl in a Forest"',
     sub: "Canvas Series",
     category: "Canvases",
